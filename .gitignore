@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+solicitudes.db
+.coverage
+docs/*.pdf
+docs/pg-*.jpg
