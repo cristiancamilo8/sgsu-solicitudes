@@ -1,0 +1,27 @@
+{% extends "base.html" %}{% block cuerpo %}
+<div class="card"><h1>{{ s.codigo }} · {{ s.asunto }} <span class="est {{ s.estado }}">{{ s.estado }}</span></h1>
+<div class="fila"><div><small>Solicitante</small><br>{{ s.solicitante }}</div><div><small>Categoría</small><br>{{ s.categoria }}</div>
+<div><small>Prioridad</small><br>{{ s.prioridad }}</div><div><small>Responsable</small><br>{{ s.responsable or 'Sin asignar' }}</div>
+<div><small>Registrada</small><br>{{ s.fecha_registro }}</div></div>
+<p style="white-space:pre-wrap">{{ s.descripcion }}</p>
+{% if s.solucion %}<p><strong>Solución:</strong> {{ s.solucion }}</p>{% endif %}</div>
+
+{% if puede_asignar or destinos %}
+<div class="card"><h2>Acciones</h2>
+{% if puede_asignar %}<form method="post" action="{{ url_for('solicitud_asignar', sid=s.id) }}"><input type="hidden" name="_csrf" value="{{ csrf }}">
+<div class="fila"><div><label>Asignar a</label><select name="responsable_id">{% for f in funcionarios %}<option value="{{ f.id }}">{{ f.nombre }}</option>{% endfor %}</select></div>
+<div><label>Nota (opcional)</label><input name="observacion"></div><div style="align-self:end"><button>Asignar</button></div></div></form><hr>{% endif %}
+{% if destinos %}<form method="post" action="{{ url_for('solicitud_estado', sid=s.id) }}"><input type="hidden" name="_csrf" value="{{ csrf }}">
+<div class="fila"><div><label>Cambiar estado a</label><select name="nuevo">{% for d in destinos %}<option>{{ d }}</option>{% endfor %}</select></div>
+<div><label>Observación o motivo</label><input name="observacion"></div></div>
+<label>Solución <small>(obligatoria para pasar a RESUELTA)</small></label><textarea name="solucion" style="min-height:60px"></textarea>
+<p><button>Actualizar estado</button></p></form>{% endif %}</div>{% endif %}
+
+{% if editable %}<div class="card"><h2>Agregar observación</h2><form method="post" action="{{ url_for('solicitud_observacion', sid=s.id) }}">
+<input type="hidden" name="_csrf" value="{{ csrf }}"><textarea name="texto" style="min-height:60px" required></textarea><p><button class="sec">Guardar observación</button></p></form></div>{% endif %}
+
+<div class="card"><h2>Historial</h2><table><tr><th>Fecha</th><th>Usuario</th><th>Movimiento</th><th>Detalle</th></tr>
+{% for h in hist %}<tr><td>{{ h.fecha }}</td><td>{{ h.usuario }}</td>
+<td>{% if h.tipo=='OBSERVACION' %}Observación{% elif h.tipo=='REGISTRO' %}Registro{% else %}{{ h.estado_anterior }} → {{ h.estado_nuevo }}{% endif %}</td>
+<td>{{ h.observacion }}</td></tr>{% endfor %}</table></div>
+{% endblock %}

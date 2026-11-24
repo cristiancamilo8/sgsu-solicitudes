@@ -1,0 +1,10 @@
+{% extends "base.html" %}{% block cuerpo %}
+<div class="card" style="max-width:640px"><h1>Nueva solicitud</h1>
+<form method="post"><input type="hidden" name="_csrf" value="{{ csrf }}">
+<label>Categoría</label><select name="categoria_id" required><option value="">Selecciona…</option>
+{% for c in categorias %}<option value="{{ c.id }}" {{ 'selected' if f.get('categoria_id')==c.id|string }}>{{ c.nombre }}</option>{% endfor %}</select>
+<label>Asunto</label><input name="asunto" required maxlength="120" value="{{ f.get('asunto','') }}">
+<label>Descripción</label><textarea name="descripcion" required minlength="10">{{ f.get('descripcion','') }}</textarea>
+<label>Prioridad</label><select name="prioridad">{% for p in PRIORIDADES %}<option {{ 'selected' if (f.get('prioridad') or 'MEDIA')==p }}>{{ p }}</option>{% endfor %}</select>
+<p><button>Registrar</button> <a class="btn sec" href="{{ url_for('solicitudes_lista') }}">Cancelar</a></p></form></div>
+{% endblock %}

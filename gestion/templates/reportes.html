@@ -1,0 +1,20 @@
+{% extends "base.html" %}{% block cuerpo %}
+<div class="card"><h1>Reportes y estadísticas</h1>
+<form method="get" class="fila">
+<div><label>Desde</label><input type="date" name="desde" value="{{ f.get('desde','') }}"></div>
+<div><label>Hasta</label><input type="date" name="hasta" value="{{ f.get('hasta','') }}"></div>
+<div><label>Estado</label><select name="estado"><option value="">Todos</option>{% for e in ESTADOS %}<option {{ 'selected' if f.get('estado')==e }}>{{ e }}</option>{% endfor %}</select></div>
+<div><label>Categoría</label><select name="categoria_id"><option value="">Todas</option>{% for c in categorias %}<option value="{{ c.id }}" {{ 'selected' if f.get('categoria_id')==c.id|string }}>{{ c.nombre }}</option>{% endfor %}</select></div>
+<div><label>Prioridad</label><select name="prioridad"><option value="">Todas</option>{% for p in PRIORIDADES %}<option {{ 'selected' if f.get('prioridad')==p }}>{{ p }}</option>{% endfor %}</select></div>
+<div><label>Responsable</label><select name="responsable_id"><option value="">Todos</option>{% for u in funcionarios %}<option value="{{ u.id }}" {{ 'selected' if f.get('responsable_id')==u.id|string }}>{{ u.nombre }}</option>{% endfor %}</select></div>
+<div style="align-self:end"><button>Aplicar</button> <a class="btn sec" href="{{ url_for('reportes_csv', **f) }}">Descargar CSV</a></div></form></div>
+<div class="fila"><div class="card"><small>Total</small><div class="num">{{ r.total }}</div></div>
+<div class="card"><small>Resueltas</small><div class="num">{{ r.resueltas }}</div></div>
+<div class="card"><small>Promedio de resolución</small><div class="num">{{ (r.promedio_horas ~ ' h') if r.promedio_horas is not none else '—' }}</div></div></div>
+<div class="fila">
+{% for titulo, datos in [('Por estado', r.por_estado), ('Por categoría', r.por_categoria), ('Por prioridad', r.por_prioridad), ('Por responsable', r.por_responsable)] %}
+<div class="card"><h2>{{ titulo }}</h2>{% for k, v in datos.items() %}<div>{{ k }}: <strong>{{ v }}</strong></div>
+<div class="barra" style="width:{{ (v / r.total * 100) | round }}%"></div>{% else %}<small>Sin datos</small>{% endfor %}</div>{% endfor %}</div>
+<div class="card"><h2>Detalle</h2><table><tr><th>Código</th><th>Fecha</th><th>Categoría</th><th>Prioridad</th><th>Responsable</th><th>Estado</th></tr>
+{% for s in r.filas %}<tr><td><a href="{{ url_for('solicitud_detalle', sid=s.id) }}">{{ s.codigo }}</a></td><td>{{ s.fecha_registro }}</td><td>{{ s.categoria }}</td><td>{{ s.prioridad }}</td><td>{{ s.responsable or '—' }}</td><td>{{ s.estado }}</td></tr>{% endfor %}</table></div>
+{% endblock %}

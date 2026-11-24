@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{% block titulo %}Solicitudes{% endblock %} · Gestión de solicitudes</title>
+<style>
+:root{--azul:#1f4e79;--gris:#f3f5f8;--borde:#d5dbe3;--txt:#1d2733}
+*{box-sizing:border-box}body{margin:0;font-family:Segoe UI,Arial,sans-serif;color:var(--txt);background:var(--gris)}
+header{background:var(--azul);color:#fff;padding:10px 20px;display:flex;flex-wrap:wrap;gap:14px;align-items:center}
+header a{color:#fff;text-decoration:none;font-size:15px}header a:hover{text-decoration:underline}
+header .sp{flex:1}header form{display:inline}
+.badge{background:#e8a317;color:#000;border-radius:10px;padding:1px 7px;font-size:12px;margin-left:3px}
+main{max-width:1050px;margin:20px auto;padding:0 16px}
+.card{background:#fff;border:1px solid var(--borde);border-radius:8px;padding:16px;margin-bottom:16px}
+h1{font-size:22px;margin:0 0 14px}h2{font-size:17px;margin:0 0 10px}
+table{width:100%;border-collapse:collapse;font-size:14px}th,td{text-align:left;padding:7px 8px;border-bottom:1px solid var(--borde);vertical-align:top}
+th{background:var(--gris)}
+label{display:block;font-size:13px;margin:10px 0 3px;font-weight:600}
+input,select,textarea{width:100%;padding:8px;border:1px solid var(--borde);border-radius:5px;font:inherit}
+textarea{min-height:90px}input[type=checkbox]{width:auto}
+button,.btn{background:var(--azul);color:#fff;border:0;border-radius:5px;padding:8px 14px;cursor:pointer;text-decoration:none;font-size:14px;display:inline-block}
+button.sec,.btn.sec{background:#fff;color:var(--azul);border:1px solid var(--azul)}
+.msg{padding:10px 14px;border-radius:6px;margin-bottom:12px}.msg.ok{background:#e3f4e8}.msg.error{background:#fbe4e4}
+.est{display:inline-block;padding:2px 9px;border-radius:10px;font-size:12px;background:#e5e9f0}
+.est.REGISTRADA{background:#e5e9f0}.est.ASIGNADA{background:#dbe9fb}.est.EN_PROCESO{background:#fdf0cc}
+.est.RESUELTA{background:#d8f1df}.est.CERRADA{background:#cfd6dd}.est.RECHAZADA{background:#f8d7d7}.est.REABIERTA{background:#f9e0c8}
+.fila{display:flex;gap:12px;flex-wrap:wrap}.fila>*{flex:1;min-width:150px}
+.barra{background:#dbe9fb;height:14px;border-radius:3px}.num{font-size:26px;font-weight:700}
+.nueva td{background:#fffbe9}small{color:#59687a}
+</style></head><body>
+<header>
+<strong>Solicitudes universitarias</strong>
+{% if usuario %}
+<a href="{{ url_for('inicio') }}">Inicio</a>
+<a href="{{ url_for('solicitudes_lista') }}">Solicitudes</a>
+{% if usuario.rol in ('ESTUDIANTE','FUNCIONARIO') %}<a href="{{ url_for('solicitud_nueva') }}">Nueva solicitud</a>{% endif %}
+{% if usuario.rol in ('SUPERVISOR','ADMIN') %}<a href="{{ url_for('reportes') }}">Reportes</a>{% endif %}
+{% if usuario.rol == 'ADMIN' %}<a href="{{ url_for('usuarios') }}">Usuarios</a><a href="{{ url_for('categorias') }}">Categorías</a>{% endif %}
+<span class="sp"></span>
+<a href="{{ url_for('notificaciones') }}">Avisos{% if no_leidas %}<span class="badge">{{ no_leidas }}</span>{% endif %}</a>
+<span>{{ usuario.nombre }} ({{ usuario.rol|lower }})</span>
+<form method="post" action="{{ url_for('logout') }}"><input type="hidden" name="_csrf" value="{{ csrf }}"><button class="sec">Salir</button></form>
+{% endif %}
+</header>
+<main>
+{% for cat, m in get_flashed_messages(with_categories=true) %}<div class="msg {{ cat }}">{{ m }}</div>{% endfor %}
+{% block cuerpo %}{% endblock %}
+</main></body></html>

@@ -1,0 +1,13 @@
+{% extends "base.html" %}{% block cuerpo %}
+<div class="card"><h1>Solicitudes</h1>
+<form method="get" class="fila">
+<div><label>Buscar</label><input name="q" value="{{ f.get('q','') }}" placeholder="código o asunto"></div>
+<div><label>Estado</label><select name="estado"><option value="">Todos</option>{% for e in ESTADOS %}<option {{ 'selected' if f.get('estado')==e }}>{{ e }}</option>{% endfor %}</select></div>
+<div><label>Prioridad</label><select name="prioridad"><option value="">Todas</option>{% for p in PRIORIDADES %}<option {{ 'selected' if f.get('prioridad')==p }}>{{ p }}</option>{% endfor %}</select></div>
+<div><label>Categoría</label><select name="categoria_id"><option value="">Todas</option>{% for c in categorias %}<option value="{{ c.id }}" {{ 'selected' if f.get('categoria_id')==c.id|string }}>{{ c.nombre }}</option>{% endfor %}</select></div>
+<div style="align-self:end"><button>Filtrar</button></div></form></div>
+<div class="card">{% if filas %}<table><tr><th>Código</th><th>Asunto</th><th>Categoría</th><th>Prioridad</th><th>Solicitante</th><th>Responsable</th><th>Estado</th></tr>
+{% for s in filas %}<tr><td><a href="{{ url_for('solicitud_detalle', sid=s.id) }}">{{ s.codigo }}</a></td><td>{{ s.asunto }}</td><td>{{ s.categoria }}</td><td>{{ s.prioridad }}</td>
+<td>{{ s.solicitante }}</td><td>{{ s.responsable or '—' }}</td><td><span class="est {{ s.estado }}">{{ s.estado }}</span></td></tr>{% endfor %}</table>
+{% else %}<p>No hay solicitudes con esos filtros.</p>{% endif %}</div>
+{% endblock %}

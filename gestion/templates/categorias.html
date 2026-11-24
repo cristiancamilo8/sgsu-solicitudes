@@ -1,0 +1,10 @@
+{% extends "base.html" %}{% block cuerpo %}
+<div class="card"><h1>Categorías de solicitudes</h1>
+<table><tr><th>Nombre</th><th>Descripción</th><th>Activa</th><th></th></tr>
+{% for c in lista %}<tr><form method="post"><input type="hidden" name="_csrf" value="{{ csrf }}"><input type="hidden" name="id" value="{{ c.id }}">
+<td><input name="nombre" value="{{ c.nombre }}"></td><td><input name="descripcion" value="{{ c.descripcion }}"></td>
+<td><input type="checkbox" name="activa" value="1" {{ 'checked' if c.activa }}></td><td><button class="sec">Guardar</button></td></form></tr>{% endfor %}</table></div>
+<div class="card"><h2>Agregar categoría</h2><form method="post"><input type="hidden" name="_csrf" value="{{ csrf }}">
+<div class="fila"><div><label>Nombre</label><input name="nombre" required></div><div><label>Descripción</label><input name="descripcion"></div></div>
+<p><button>Crear</button></p></form></div>
+{% endblock %}

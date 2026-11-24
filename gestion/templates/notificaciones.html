@@ -1,0 +1,8 @@
+{% extends "base.html" %}{% block cuerpo %}
+<div class="card"><h1>Avisos</h1>
+<form method="post"><input type="hidden" name="_csrf" value="{{ csrf }}"><button class="sec">Marcar todo como leído</button></form><br>
+{% if lista %}<table><tr><th>Fecha</th><th>Aviso</th></tr>
+{% for n in lista %}<tr class="{{ '' if n.leida else 'nueva' }}"><td>{{ n.fecha }}</td>
+<td>{% if n.solicitud_id %}<a href="{{ url_for('solicitud_detalle', sid=n.solicitud_id) }}">{{ n.mensaje }}</a>{% else %}{{ n.mensaje }}{% endif %}</td></tr>{% endfor %}</table>
+{% else %}<p>No tienes avisos.</p>{% endif %}</div>
+{% endblock %}

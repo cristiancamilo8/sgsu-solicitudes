@@ -1,0 +1,9 @@
+{% extends "base.html" %}{% block titulo %}Ingresar{% endblock %}
+{% block cuerpo %}
+<div class="card" style="max-width:380px;margin:40px auto">
+<h1>Iniciar sesión</h1>
+<form method="post"><input type="hidden" name="_csrf" value="{{ csrf }}">
+<label>Correo</label><input name="correo" type="email" required autofocus>
+<label>Contraseña</label><input name="password" type="password" required>
+<p><button>Entrar</button></p></form></div>
+{% endblock %}

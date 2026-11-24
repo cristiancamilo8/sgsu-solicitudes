@@ -1,0 +1,13 @@
+{% extends "base.html" %}{% block cuerpo %}
+<h1>Hola, {{ usuario.nombre.split()[0] }}</h1>
+<div class="fila">
+<div class="card"><small>Solicitudes visibles</small><div class="num">{{ resumen.total }}</div></div>
+{% for e in ['REGISTRADA','ASIGNADA','EN_PROCESO','RESUELTA'] %}
+<div class="card"><small>{{ e.replace('_',' ').title() }}</small><div class="num">{{ resumen.por_estado.get(e,0) }}</div></div>{% endfor %}
+</div>
+<div class="card"><h2>Últimas solicitudes</h2>
+{% if recientes %}<table><tr><th>Código</th><th>Asunto</th><th>Estado</th><th>Fecha</th></tr>
+{% for s in recientes %}<tr><td><a href="{{ url_for('solicitud_detalle', sid=s.id) }}">{{ s.codigo }}</a></td><td>{{ s.asunto }}</td>
+<td><span class="est {{ s.estado }}">{{ s.estado }}</span></td><td>{{ s.fecha_registro }}</td></tr>{% endfor %}</table>
+{% else %}<p>Todavía no hay solicitudes.</p>{% endif %}</div>
+{% endblock %}
