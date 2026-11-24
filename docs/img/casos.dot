@@ -1,0 +1,10 @@
+digraph G { rankdir=LR; dpi=130; fontname="Helvetica"; node[fontname="Helvetica",fontsize=10];
+subgraph cluster_a{label="Actores";style=invis; ADM[shape=box,label="Administrador"];EST[shape=box,label="Estudiante"];FUN[shape=box,label="Funcionario"];SUP[shape=box,label="Supervisor"];}
+node[shape=ellipse,style=filled,fillcolor="#eef3fa"];
+CU1[label="Iniciar sesión"];CU2[label="Gestionar usuarios y roles"];CU3[label="Gestionar categorías"];CU4[label="Registrar solicitud"];
+CU5[label="Consultar mis solicitudes"];CU6[label="Consultar solicitudes asignadas"];CU7[label="Asignar / reasignar responsable"];
+CU8[label="Actualizar estado"];CU9[label="Registrar observaciones y solución"];CU10[label="Consultar historial"];CU11[label="Ver notificaciones"];CU12[label="Generar reportes"];
+edge[arrowhead=none];
+ADM->CU1;EST->CU1;FUN->CU1;SUP->CU1; ADM->CU2;ADM->CU3;ADM->CU7;
+EST->CU4;EST->CU5;EST->CU10;EST->CU11;EST->CU8; FUN->CU6;FUN->CU8;FUN->CU9;FUN->CU4;FUN->CU11;
+SUP->CU7;SUP->CU12;SUP->CU10;SUP->CU11; ADM->CU12; }

@@ -1,0 +1,5 @@
+digraph G { rankdir=TB; dpi=130; node[shape=box,style="rounded,filled",fillcolor="#eef3fa",fontname="Helvetica",fontsize=10]; edge[fontname="Helvetica",fontsize=9];
+a[label="Estudiante inicia sesión",shape=oval]; b[label="Llena categoría, asunto,\ndescripción y prioridad"]; c[label="¿Datos válidos y\ncategoría activa?",shape=diamond,fillcolor="#fff6dd"];
+d[label="Se guarda la solicitud\n(estado REGISTRADA, código SOL-AAAA-NNNN)"]; e[label="Se anota en el historial"]; f[label="Aviso a administradores,\nsupervisores y solicitante"];
+g[label="Supervisor asigna funcionario\n(estado ASIGNADA)"]; h[label="Funcionario atiende\n(EN_PROCESO) y registra solución"]; i[label="RESUELTA → el solicitante\ncierra o reabre",shape=oval]; x[label="Mensaje de error\ny vuelve al formulario",fillcolor="#f8d7d7"];
+a->b->c; c->d[label="sí"]; c->x[label="no"]; x->b; d->e->f->g->h->i; }

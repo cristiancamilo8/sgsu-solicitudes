@@ -1,0 +1,4 @@
+digraph G { rankdir=TB; dpi=130; node[shape=box,style="rounded,filled",fillcolor="#eef3fa",fontname="Helvetica",fontsize=11]; edge[fontname="Helvetica",fontsize=9];
+N[label="Navegador (HTML + CSS)\nplantillas Jinja2",fillcolor="#fff6dd"]; C[label="Capa web: app.py (Flask)\nrutas, sesión, roles, CSRF"];
+S[label="Capa de servicios\nreglas de negocio, validaciones"]; E[label="Ciclo de vida (State)\nBus de eventos (Observer)"]; R[label="Repositorios (Repository)\nconsultas SQL"]; D[label="SQLite\nbase de datos relacional",shape=cylinder,fillcolor="#e3f4e8"];
+N->C[label="HTTP"]; C->S; S->E; S->R; E->R[style=dashed]; R->D; }

@@ -1,0 +1,20 @@
+digraph G { rankdir=TB; dpi=130; node[shape=record,fontname="Helvetica",fontsize=9,style=filled,fillcolor="#eef3fa"]; edge[fontname="Helvetica",fontsize=8];
+Usuario[label="{Usuario|id, nombre, correo, rol, activo|de_fila()}"];
+Categoria[label="{Categoria|id, nombre, descripcion, activa|de_fila()}"];
+Solicitud[label="{Solicitud|id, codigo, fecha_registro, asunto, descripcion,\lprioridad, estado, solucion, fecha_resolucion\l|de_fila()}"];
+Historial[label="{Movimiento (historial)|fecha, tipo, estado_anterior,\lestado_nuevo, observacion\l}"];
+Notificacion[label="{Notificacion|mensaje, fecha, leida}"];
+EstadoSolicitud[label="{«abstracta»\nEstadoSolicitud|nombre, siguientes, exige_observacion, editable}"];
+Estados[label="{EstRegistrada, EstAsignada,\lEstEnProceso, EstResuelta,\lEstCerrada, EstRechazada,\lEstReabierta\l}"];
+SolicitudService[label="{SolicitudService|registrar(), asignar(),\lcambiar_estado(), observar(),\llistar(), obtener()\l}"];
+ReporteService[label="{ReporteService|generar(filtros)}"];
+UsuarioService[label="{UsuarioService / CategoriaService|crear(), editar(), guardar()}"];
+AutenticacionService[label="{AutenticacionService|iniciar_sesion()}"];
+BusEventos[label="{BusEventos|suscribir(), publicar()}"];
+Notificador[label="{NotificadorInterno|registrada(), asignada(),\lestado_cambiado(), observacion()\l}"];
+Repos[label="{Repositorios|UsuarioRepo, CategoriaRepo,\lSolicitudRepo, HistorialRepo,\lNotificacionRepo\l}"];
+Usuario->Solicitud[label="1 solicitante  0..*"]; Usuario->Solicitud[label="0..1 responsable  0..*",style=dashed];
+Categoria->Solicitud[label="1   0..*"]; Solicitud->Historial[label="1   1..*",arrowhead=diamond]; Solicitud->Notificacion[label="0..1   0..*"];
+Usuario->Notificacion[label="1   0..*"]; Estados->EstadoSolicitud[arrowhead=empty]; Solicitud->EstadoSolicitud[label="estado actual",style=dashed];
+SolicitudService->Solicitud[label="gestiona"]; SolicitudService->EstadoSolicitud[label="consulta reglas"]; SolicitudService->BusEventos[label="publica"];
+Notificador->BusEventos[label="observa"]; Notificador->Notificacion[label="crea"]; SolicitudService->Repos; ReporteService->Repos; UsuarioService->Repos; AutenticacionService->Repos; }

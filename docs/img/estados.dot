@@ -1,0 +1,8 @@
+digraph G { rankdir=TB; nodesep=0.6; ranksep=0.7; dpi=130; node[shape=box,style="rounded,filled",fillcolor="#eef3fa",fontname="Helvetica",fontsize=12]; edge[fontname="Helvetica",fontsize=10];
+ini[shape=circle,label="",width=.2,style=filled,fillcolor=black]; ini->REGISTRADA;
+REGISTRADA->ASIGNADA[label="asignar\n(admin/supervisor)"]; REGISTRADA->RECHAZADA[label="rechazar + motivo"];
+ASIGNADA->ASIGNADA[label="reasignar"]; ASIGNADA->EN_PROCESO[label="atender\n(responsable)"]; ASIGNADA->RECHAZADA[label="rechazar + motivo"];
+EN_PROCESO->RESUELTA[label="solución\nobligatoria"]; RESUELTA->CERRADA[label="cerrar\n(solicitante/jefe)"];
+RESUELTA->REABIERTA[label="reabrir + motivo"]; CERRADA->REABIERTA[label="reapertura\nautorizada"];
+REABIERTA->ASIGNADA[label="reasignar"]; REABIERTA->EN_PROCESO[label="atender"];
+RECHAZADA[fillcolor="#f8d7d7"]; CERRADA[fillcolor="#d5dbe3"]; }
